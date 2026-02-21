@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { formLoginParams } from "../../types/LoginParams";
 import { Text } from "react-native";
+import { Input } from "../Input";
 
 export function LoginForm() {
   const {
@@ -10,6 +11,11 @@ export function LoginForm() {
   } = useForm<formLoginParams>();
 
   return <>
-    <Text className="text-white">Login</Text>
+    <Input
+      control={control}
+      name="email"
+      label="Email"
+      placeholder="E-mail"
+    />
   </>;
 }
