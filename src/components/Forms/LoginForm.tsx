@@ -16,6 +16,15 @@ export function LoginForm() {
       name="email"
       label="Email"
       placeholder="E-mail"
+      leftIconName="mail-outline"
+    />
+      <Input
+      control={control}
+      name="password"
+      label="Senha"
+      placeholder="Senha"
+      leftIconName="lock-outline"
+      secureTextEntry
     />
   </>;
 }
