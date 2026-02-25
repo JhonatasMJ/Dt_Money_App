@@ -1,7 +1,7 @@
 import { Controller, FieldValues } from "react-hook-form";
-import { InputParams } from "../types/Input";
+import { InputParams } from "@/types/Input";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { colors } from "../shared/colors";
+import { colors } from "@/shared/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
 import clsx from "clsx";
