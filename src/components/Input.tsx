@@ -10,19 +10,21 @@ export function Input<T extends FieldValues>({
   control,
   name,
   leftIconName,
+  secureTextEntry,
   label,
   ...rest
 }: InputParams<T>) {
 /* Pega ref do input, como por exemplo o foco */
   const inputRef = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(secureTextEntry);
+ 
   /* Verifica se o input está focado */
-  const checkFocus = () => {
-    if (inputRef.current) {
-      setIsFocused(inputRef.current.isFocused());
+const checkFocus = () => {
+  if (inputRef.current) {
+    setIsFocused(inputRef.current.isFocused());
   }
-}
+};
 
   return (
     <Controller
@@ -50,8 +52,18 @@ export function Input<T extends FieldValues>({
                 ref={inputRef}
                 onFocus={checkFocus}
                 onEndEditing={checkFocus}
+                secureTextEntry={showPassword}
                 {...rest}
               />
+              {secureTextEntry && (
+                  <TouchableOpacity onPress={() => setShowPassword(value => !value)}>
+                    <MaterialIcons
+                    name={showPassword ? "visibility" : "visibility-off"}
+                    color={colors.gray[600]}
+                    size={20}
+                    />
+                  </TouchableOpacity>  
+                )}
             </TouchableOpacity>
           </View>
         );

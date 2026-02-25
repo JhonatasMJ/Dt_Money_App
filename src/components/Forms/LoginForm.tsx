@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { formLoginParams } from "../../types/LoginParams";
-import { Text } from "react-native";
 import { Input } from "../Input";
 
 export function LoginForm() {
