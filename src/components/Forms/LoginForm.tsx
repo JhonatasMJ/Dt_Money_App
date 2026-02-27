@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { formLoginParams } from "../../types/LoginParams";
 import { Input } from "../Input";
+import Button from "../Button";
 
 export function LoginForm() {
   const {
@@ -25,5 +26,8 @@ export function LoginForm() {
       leftIconName="lock-outline"
       secureTextEntry
     />
+    <Button mode="fill" iconName="arrow-forward">
+      Login
+    </Button>
   </>;
 }
