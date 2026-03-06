@@ -9,15 +9,15 @@ import clsx from "clsx";
 export function Input<T extends FieldValues>({
   control,
   name,
+  label,
   leftIconName,
   secureTextEntry,
-  label,
   ...rest
 }: InputParams<T>) {
 /* Pega ref do input, como por exemplo o foco */
   const inputRef = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [showPassword, setShowPassword] = useState(secureTextEntry);
+  const [showPassword, setShowPassword] = useState(!!secureTextEntry);
  
   /* Verifica se o input está focado */
 const checkFocus = () => {
@@ -30,7 +30,7 @@ const checkFocus = () => {
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange, value } }) => {
+      render={({ field: { onChange, value }, fieldState: { error } }) => {
         return (
           /* Se o input estiver focado, o label vai ficar verde, o clsx serve para fazer condicionais de formas mais simples*/
           <View className="w-full mt-4 ">

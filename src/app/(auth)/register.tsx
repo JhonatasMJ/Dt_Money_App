@@ -1,14 +1,14 @@
 import { View} from "react-native";
 import { DismissKeyboardView } from "@/components/DismissKeyboardView";
-import { LoginForm } from "@/components/Forms/LoginForm";
 import { AuthHeader } from "@/components/AuthHeader";
+import { RegisterForm } from "@/components/Forms/RegisterForm";
 
-export default function Register () {
+export default function Register() {
   return (
     <DismissKeyboardView>
       <View className="flex-1 w-[82%] self-center">
         <AuthHeader />
-        <LoginForm />
+        <RegisterForm />
       </View>
     </DismissKeyboardView>
   )

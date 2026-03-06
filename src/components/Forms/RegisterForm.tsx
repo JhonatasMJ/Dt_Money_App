@@ -1,16 +1,28 @@
-import { useForm } from "react-hook-form";
-import { formRegisterParams } from "@/types/RegisterParams";
+import { useForm, Resolver } from "react-hook-form";
 import { Input } from "../Input";
 import Button from "../Button";
 import { Text, View } from "react-native";
 import { router } from "expo-router";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerSchema } from "@/schemas/registerSchema";
+import { formRegisterParams } from "@/types/RegisterParams";
 
 export function RegisterForm() {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<formRegisterParams>();
+  } = useForm<formRegisterParams>({
+      defaultValues:{ 
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      },
+      resolver: yupResolver(registerSchema) as Resolver<formRegisterParams>,
+  });
+
+  const onSubmit = async () => {}
 
   return <>
     <Input
@@ -45,7 +57,7 @@ export function RegisterForm() {
     />
 
     <View className="flex-1 justify-between mt-8 mb-6 min-h-[250px]">
-    <Button iconName="arrow-forward">
+    <Button iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
       Cadastrar
     </Button>
     <View>

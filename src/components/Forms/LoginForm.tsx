@@ -1,17 +1,28 @@
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { formLoginParams } from "@/types/LoginParams";
 import { Input } from "../Input";
 import Button from "../Button";
 import { Text, View } from "react-native";
 import { router } from "expo-router";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "@/schemas/loginSchema";
 
 export function LoginForm() {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<formLoginParams>();
+  } = useForm<formLoginParams>({
+     defaultValues: {
+      email: '',
+      password: '',
+     },
+     resolver: yupResolver(loginSchema) as Resolver<formLoginParams>,
+  });
 
+  const onSubmit = async () => {
+
+  }
   return <>
     <Input
       control={control}
@@ -30,12 +41,12 @@ export function LoginForm() {
     />
 
     <View className="flex-1 justify-between mt-8 mb-6 min-h-[250px]">
-    <Button iconName="arrow-forward">
+    <Button iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
       Login
     </Button>
     <View>
       <Text className="mb-6 text-gray-300 text-base">Ainda não possui uma conta?</Text>
-      <Button mode="outline" iconName="arrow-forward" onPress={ () => router.push('/(auth)/register')}>
+      <Button mode="outline" iconName="arrow-forward" onPress={ () => router.push('/register')}>
       Cadastrar
     </Button>
     </View>
