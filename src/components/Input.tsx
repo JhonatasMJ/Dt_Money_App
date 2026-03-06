@@ -5,6 +5,7 @@ import { colors } from "@/shared/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
 import clsx from "clsx";
+import { ErrorMessage } from "./ErrorMessage";
 
 export function Input<T extends FieldValues>({
   control,
@@ -65,6 +66,10 @@ const checkFocus = () => {
                   </TouchableOpacity>  
                 )}
             </TouchableOpacity>
+            {error && 
+            <ErrorMessage>
+              {error.message}
+            </ErrorMessage>}
           </View>
         );
       }}
