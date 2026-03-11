@@ -1,8 +1,10 @@
-import { formLoginParams } from "./formLoginParams";
-import { formRegisterParams } from "./formRegisterParams";
+import { IUser } from "@/shared/interfaces/https/user-interface";
+import { formLoginParams } from "./LoginParams";
+import { formRegisterParams } from "./RegisterParams";
+
 
 export type AuthContextType = {
-  user: null;
+  user: IUser | null;
   token: string | null;
   handleAuthenticate: (params: formLoginParams) => Promise<void>;
   handleRegister: (params: formRegisterParams) => Promise<void>;
