@@ -6,6 +6,8 @@ import { Text, View } from "react-native";
 import { router } from "expo-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/schemas/loginSchema";
+import { useAuthContext } from "@/context/auth.context";
+import { AxiosError } from "axios";
 
 export function LoginForm() {
   const {
@@ -20,8 +22,16 @@ export function LoginForm() {
      resolver: yupResolver(loginSchema) as Resolver<formLoginParams>,
   });
 
-  const onSubmit = async () => {
+  const {handleAuthenticate} = useAuthContext();
 
+  const onSubmit = async (userData: formLoginParams) => {
+    try {
+      await handleAuthenticate(userData);
+    } catch (error) { 
+      if(error instanceof AxiosError) {
+        console.log(error.response?.data);
+      }
+    } 
   }
   return <>
     <Input

@@ -16,8 +16,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const handleAuthenticate = async (userData: formLoginParams) => {
     const {token,user} = await authService.authenticate(userData);
+    console.log(token, user);
     setUser(user);
     setToken(token);
+
   };
 
   const handleRegister = async (formData: formRegisterParams) => {};
