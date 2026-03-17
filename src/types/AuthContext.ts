@@ -9,4 +9,5 @@ export type AuthContextType = {
   handleAuthenticate: (params: formLoginParams) => Promise<void>;
   handleRegister: (params: formRegisterParams) => Promise<void>;
   handleLogout: () => void;
+  restoreUserSession: () => Promise<string | null>;
 };
