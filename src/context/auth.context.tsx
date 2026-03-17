@@ -2,7 +2,6 @@ import { AuthContextType } from "@/types/AuthContext";
 import { formLoginParams } from "@/types/LoginParams";
 import { formRegisterParams } from "@/types/RegisterParams";
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import * as authService from "@/shared/services/auth.service"
 import { IUser } from "@/shared/interfaces/https/user-interface";
 
@@ -22,7 +21,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   };
 
-  const handleRegister = async (formData: formRegisterParams) => {};
+  const handleRegister = async (formData: formRegisterParams) => {
+    const {token,user} = await authService.registerUser(formData);
+    setUser(user);
+    setToken(token);
+  };
 
   const handleLogout = () => {};
 
