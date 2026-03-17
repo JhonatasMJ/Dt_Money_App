@@ -15,10 +15,11 @@ export const AuthContext = createContext<AuthContextType>(
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const handleAuthenticate = async (userData: formLoginParams) => {
     const {token,user} = await authService.authenticate(userData);
-    await AsyncStorage.setItem("@dt-money-user", JSON.stringify({ user, token }));
+    await AsyncStorage.setItem("dt-money-user", JSON.stringify({ user, token }));
     setUser(user);
     setToken(token);
 
@@ -26,12 +27,16 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const handleRegister = async (formData: formRegisterParams) => {
     const {token,user} = await authService.registerUser(formData);
-    await AsyncStorage.setItem("@dt-money-user", JSON.stringify({ user, token }));
+    await AsyncStorage.setItem("dt-money-user", JSON.stringify({ user, token }));
     setUser(user);
     setToken(token);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = async () => {
+    await AsyncStorage.clear();
+    setToken(null);
+    setUser(null);
+  };
 
   /* Restaura o user e o token para manter ele logado */
   const restoreUserSession = async () => {
