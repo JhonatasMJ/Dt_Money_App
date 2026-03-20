@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { SystemBars } from "react-native-edge-to-edge";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SnackBarContextProvider } from "@/context/snackbar.context";
+import { SnackBar } from "@/components/SnackBar";
 
 export default function RootLayout() {
   return (
@@ -14,6 +15,7 @@ export default function RootLayout() {
           <SystemBars style="light" />
           <StatusBar />
           <Slot />
+        <SnackBar />
         </SafeAreaView>
       </AuthContextProvider>
     </SnackBarContextProvider>

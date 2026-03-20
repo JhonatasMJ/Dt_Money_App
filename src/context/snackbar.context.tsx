@@ -1,5 +1,5 @@
 import { NotifyMessageParams, SnackBarContextType, SnackBarMessageType } from "@/types/SnackBarContext";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 export const SnackBarContext = createContext({} as SnackBarContextType);
 
@@ -25,4 +25,9 @@ export const SnackBarContextProvider = ({ children }: { children: ReactNode }) =
       {children}
     </SnackBarContext.Provider>
   )
+}
+
+export const useSnackBarContext = () => {
+  const context = useContext(SnackBarContext);
+  return context;
 }
