@@ -7,7 +7,6 @@ import { IUser } from "@/shared/interfaces/https/user-interface";
 import  AsyncStorage from "@react-native-async-storage/async-storage";
 import { IAuthenticateResponse } from "@/shared/interfaces/https/authenticate-response";
 
-
 export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType,
 );
