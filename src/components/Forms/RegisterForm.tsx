@@ -1,13 +1,14 @@
 import { useForm, Resolver } from "react-hook-form";
 import { Input } from "../Input";
 import Button from "../Button";
-import { Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { router } from "expo-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "@/schemas/registerSchema";
 import { formRegisterParams } from "@/types/RegisterParams";
 import { useAuthContext } from "@/context/auth.context";
-import { AxiosError } from "axios";
+import useErrorHandler from "@/shared/hooks/useErrorHandler";
+import { colors } from "@/shared/colors";
 
 export function RegisterForm() {
   const {
@@ -25,13 +26,12 @@ export function RegisterForm() {
   });
 
   const { handleRegister } = useAuthContext();
+  const {handleError} = useErrorHandler();
   const onSubmit = async (userData: formRegisterParams) => {
     try {
       await handleRegister(userData);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data);
-      }
+      handleError(error, 'Falha ao cadastrar')
     }
   };
   return (
@@ -69,7 +69,7 @@ export function RegisterForm() {
 
       <View className="flex-1 justify-between mt-8 mb-6 min-h-[250px]">
         <Button iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
-          Cadastrar
+        {isSubmitting ? <ActivityIndicator color={colors.white}/> : 'Cadastrar'}
         </Button>
         <View>
           <Text className="mb-6 text-gray-300 text-base">
