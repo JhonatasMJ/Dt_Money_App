@@ -13,19 +13,19 @@ export default function Loading({
   const { restoreUserSession, handleLogout } = useAuthContext();
 
   useEffect(() => {
-    async () => {
+    (async () => {
       try {
         const user = await restoreUserSession();
         if (!user) {
-         await handleLogout();
+          await handleLogout();
         }
       } catch (error) {
         await handleLogout();
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    };
-  }, [restoreUserSession]);
+    })();
+  }, [restoreUserSession, handleLogout]);
 
   return (
     <SafeAreaView className="bg-background-primary items-center justify-center flex-1">

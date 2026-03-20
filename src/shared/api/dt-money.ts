@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Platform } from "react-native";
+import { AppError } from "../helpers/AppError";
 
 /* No emulador de android não roda localhost, então tem que usar um ip especial */
 
@@ -10,4 +11,13 @@ const baseURL = Platform.select({
 
 export const dtMoneyApi = axios.create({
   baseURL
+});
+
+/* Tratamento de erros da api, app error pega o message retornado na api */
+dtMoneyApi.interceptors.response.use((config) => config, (error) => { 
+    if (error.response && error.response.data) {
+      return Promise.reject(new AppError(error.response.data.message));
+    } else {
+      return Promise.reject(new AppError("Falha na requsição"));
+    }
 });
