@@ -2,9 +2,11 @@ import { useAuthContext } from "@/context/auth.context";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/shared/colors";
+import { useBottomSheetContext } from "@/context/bottomSheet.context";
 
 export function Header() {
   const { handleLogout } = useAuthContext();
+  const {openBottomSheet} = useBottomSheetContext();
   return (
     <View className="w-full flex-row p-8 justify-between">
       <View>
@@ -20,7 +22,9 @@ export function Header() {
           <Text className="text-gray-700 text-base">Sair da Conta</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity className="bg-accent-brand w-[130px] items-center justify-center rounded-xl h-[50px] text-white font-bold text-sm">
+      <TouchableOpacity onPress={() => {
+        openBottomSheet(<Text>Formulário da nova Transação</Text>, 0)
+      }}  className="bg-accent-brand w-[130px] items-center justify-center rounded-xl h-[50px] text-white font-bold text-sm">
         <Text>Nova Transação</Text>
       </TouchableOpacity>
     </View>

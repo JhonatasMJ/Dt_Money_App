@@ -6,10 +6,12 @@ import { SystemBars } from "react-native-edge-to-edge";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SnackBarContextProvider } from "@/context/snackbar.context";
 import { SnackBar } from "@/components/SnackBar";
-import { BottomSheetProvider } from "@/context/bottomsheet.context";
+import { BottomSheetProvider } from "@/context/bottomSheet.context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   return (
+    <GestureHandlerRootView className="flex-1">
     <SnackBarContextProvider>
       <AuthContextProvider>
         <BottomSheetProvider>
@@ -22,5 +24,6 @@ export default function RootLayout() {
         </BottomSheetProvider>
       </AuthContextProvider>
     </SnackBarContextProvider>
+    </GestureHandlerRootView>
   );
 }
