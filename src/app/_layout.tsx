@@ -6,17 +6,20 @@ import { SystemBars } from "react-native-edge-to-edge";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SnackBarContextProvider } from "@/context/snackbar.context";
 import { SnackBar } from "@/components/SnackBar";
+import { BottomSheetProvider } from "@/context/bottomsheet.context";
 
 export default function RootLayout() {
   return (
     <SnackBarContextProvider>
       <AuthContextProvider>
+        <BottomSheetProvider>
         <SafeAreaView className="flex-1 bg-brand-primary">
           <SystemBars style="light" />
           <StatusBar />
           <Slot />
         <SnackBar />
         </SafeAreaView>
+        </BottomSheetProvider>
       </AuthContextProvider>
     </SnackBarContextProvider>
   );
