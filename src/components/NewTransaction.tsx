@@ -5,6 +5,7 @@ import {MaterialIcons} from '@expo/vector-icons'
 import { colors } from "@/shared/colors";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import CurrencyInput from "react-native-currency-input";
+import { SelectType } from "./SelectType";
 export function NewTransaction() {
 
   const {closeBottomSheet} = useBottomSheetContext();
@@ -50,6 +51,11 @@ export function NewTransaction() {
         placeholderTextColor={colors.gray[700]}
         value={transaction.value}
         className="text-white text-lg h-50 bg-background-primary my-2 rounded-md px-4"/>
+
+        <SelectType
+        typeId={transaction.typeId}
+        setTransactionType={(typeId) => setTransactionData('typeId', typeId)}
+        />
       </View>
     </View>
   )
