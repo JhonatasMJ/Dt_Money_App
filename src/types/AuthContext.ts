@@ -8,6 +8,6 @@ export type AuthContextType = {
   token: string | null;
   handleAuthenticate: (params: formLoginParams) => Promise<void>;
   handleRegister: (params: formRegisterParams) => Promise<void>;
-  handleLogout: () => void;
+  handleLogout: () => Promise<void>;
   restoreUserSession: () => Promise<string | null>;
 };
