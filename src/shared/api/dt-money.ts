@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Platform } from "react-native";
 import { AppError } from "../helpers/AppError";
+import { addTokenToRequest } from "../helpers/axios.helper";
 
 /* No emulador de android não roda localhost, então tem que usar um ip especial */
 
@@ -12,6 +13,9 @@ const baseURL = Platform.select({
 export const dtMoneyApi = axios.create({
   baseURL
 });
+
+/* Pega o token do storage e coloca no header */
+addTokenToRequest(dtMoneyApi);
 
 /* Tratamento de erros da api, app error pega o message retornado na api */
 dtMoneyApi.interceptors.response.use((config) => config, (error) => { 
