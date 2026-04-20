@@ -7,8 +7,13 @@ import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import CurrencyInput from "react-native-currency-input";
 import { SelectType } from "./SelectType";
 import { CategoryModal } from "./CategoryModal";
-export function NewTransaction() {
+import { transactionSchema } from "@/schemas/transactionSchema";
+import * as Yup from 'yup';
+import Button from "./Button";
 
+type ValidationErrors = Record<keyof CreateTransactionRequest, string>;
+
+export function NewTransaction() {
   const {closeBottomSheet} = useBottomSheetContext();
 
   const [transaction,setTransaction] = useState<CreateTransactionRequest>({
@@ -17,6 +22,27 @@ export function NewTransaction() {
     typeId: 0,
     value: 0,
   })
+
+
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>();
+
+  const handleCreateTransaction = async () => {
+    try {
+      await transactionSchema.validate(transaction , {abortEarly: false});
+    } catch (error) {
+      if(error instanceof Yup.ValidationError) {
+        const errors = {} as ValidationErrors;
+
+        error.inner.forEach((err) => {
+          if(err.path) {
+            errors[err.path as keyof CreateTransactionRequest] = err.message;
+          }
+        });
+
+        setValidationErrors(errors);
+      }
+    } 
+  }
 
   /* Seta os dados da transação, todos de uma vez e só repasso no input */
   const setTransactionData = (key: keyof CreateTransactionRequest, value: string | number) => { 
@@ -47,7 +73,7 @@ export function NewTransaction() {
         separator=","
         precision={2}
         minValue={0}
-        onChangeText={(value) => setTransactionData('value', value ?? 0)}
+        onChangeValue={(value) => setTransactionData('value', value ?? 0)}
         placeholder="Valor" 
         placeholderTextColor={colors.gray[700]}
         value={transaction.value}
@@ -61,6 +87,11 @@ export function NewTransaction() {
         typeId={transaction.typeId}
         setTransactionType={(typeId) => setTransactionData('typeId', typeId)}
         />
+        <View className="my-4">
+          <Button onPress={handleCreateTransaction}>
+            <Text>Registrar</Text>
+          </Button>
+        </View>
       </View>
     </View>
   )
