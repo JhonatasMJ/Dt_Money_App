@@ -6,6 +6,7 @@ import { colors } from "@/shared/colors";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import CurrencyInput from "react-native-currency-input";
 import { SelectType } from "./SelectType";
+import { CategoryModal } from "./CategoryModal";
 export function NewTransaction() {
 
   const {closeBottomSheet} = useBottomSheetContext();
@@ -52,6 +53,10 @@ export function NewTransaction() {
         value={transaction.value}
         className="text-white text-lg h-50 bg-background-primary my-2 rounded-md px-4"/>
 
+        <CategoryModal
+        selectedCategory={transaction.categoryId}
+        onSelect={(categoryId) => setTransactionData('categoryId', categoryId)}
+        />
         <SelectType
         typeId={transaction.typeId}
         setTransactionType={(typeId) => setTransactionData('typeId', typeId)}
