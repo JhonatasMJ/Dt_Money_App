@@ -3,6 +3,7 @@ import { createContext, ReactNode, use, useCallback, useContext, useState } from
 import * as transactionServices from "@/shared/services/transaction.service";
 import { CreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
 import { Transaction } from "@/shared/interfaces/transaction";
+import { TotalTransactions } from "@/shared/interfaces/total-transaction";
 
 
 /* Contexto de transações */
@@ -11,6 +12,7 @@ export type TransactionContextType = {
   createTransaction: (transaction: CreateTransactionRequest) => Promise<void>;
   categories: TransactionCategory[];
   fetchTransactions: () => Promise<void>;
+  totalTransactions: TotalTransactions;
 };
 
 export const TransactionContext = createContext({} as TransactionContextType);
@@ -22,6 +24,11 @@ export const TransactionContextProvider = ({
 }) => {
   const [categories, setCategories] = useState<TransactionCategory[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [totalTransactions, setTotalTransactions] = useState<TotalTransactions>({
+    revenue: 0,
+    expense: 0,
+    total: 0,
+  })
 
   const fetchCategories = async () => {
     const categoriesResponse = await transactionServices.getTransactionCategories();
@@ -40,6 +47,7 @@ export const TransactionContextProvider = ({
     });
 
     setTransactions(transactionResponse.data);
+    setTotalTransactions(transactionResponse.totalTransactions);
   }, []);
 
   return (
@@ -49,6 +57,7 @@ export const TransactionContextProvider = ({
         fetchCategories,
         createTransaction,
         fetchTransactions,
+        totalTransactions,
       }}
     >
       {children}
