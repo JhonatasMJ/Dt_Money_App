@@ -6,7 +6,7 @@ import { FlatList } from "react-native";
 import { ListHeader } from "@/components/ListHeader";
 
 export default function Home() { 
-  const {fetchCategories} = useTransactionContext();
+  const {fetchCategories, fetchTransactions} = useTransactionContext();
   const {handleError} = useErrorHandler();
   const handleFetchCategories = async () => {
     try{
@@ -18,7 +18,8 @@ export default function Home() {
 /* Busca as categorias ao entrar na home */
   useEffect(() => { 
     (async () => {
-      handleFetchCategories();
+      await handleFetchCategories();
+      await fetchTransactions();
     })() 
   }, [])
 
