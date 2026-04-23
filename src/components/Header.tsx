@@ -9,7 +9,7 @@ export function Header() {
   const { handleLogout } = useAuthContext();
   const {openBottomSheet} = useBottomSheetContext();
   return (
-    <View className="w-full flex-row p-8 justify-between bg-background-primary">
+    <View className="w-full flex-row px-8 py-1 justify-between bg-background-primary">
       <View>
         <Image
           source={require("@/assets/Logo.png")}

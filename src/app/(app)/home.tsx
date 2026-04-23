@@ -18,14 +18,15 @@ export default function Home() {
 /* Busca as categorias ao entrar na home */
   useEffect(() => { 
     (async () => {
-      await handleFetchCategories();
-      await fetchTransactions();
+ /* promise all para executar as duas funções ao mesmo tempo */
+      await Promise.all([fetchCategories(), fetchTransactions()]);
     })() 
   }, [])
 
   return (
-    <SafeAreaView className="flex-1 bg-background-secondary">
+    <SafeAreaView className="flex-1 bg-background-primary">
       <FlatList
+      className="bg-background-secondary"
       data={[]}
       ListHeaderComponent={<ListHeader/>}
       renderItem={() => <></>}
