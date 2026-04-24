@@ -36,7 +36,7 @@ export function TransactionCard({ amount, type }: Props) {
             {lastTransaction?.createdAt
               ? format(
                   lastTransaction?.createdAt,
-                  `"Última ${cardData.label.toLocaleLowerCase()} em" d "de" MMMM`,
+                  `'Última ${cardData.label.toLocaleLowerCase()} em' d 'de' MMMM`,
                   { locale: ptBR },
                 )
               : "Nenhuma transação encontrada"}

@@ -4,9 +4,10 @@ import { useTransactionContext } from "@/context/transaction.context";
 import useErrorHandler from "@/shared/hooks/useErrorHandler";
 import { FlatList } from "react-native";
 import { ListHeader } from "@/components/ListHeader";
+import { TransactionListCard } from "@/components/TransactionListCard";
 
 export default function Home() { 
-  const {fetchCategories, fetchTransactions} = useTransactionContext();
+  const {fetchCategories, fetchTransactions, transactions} = useTransactionContext();
   const {handleError} = useErrorHandler();
   const handleFetchCategories = async () => {
     try{
@@ -19,7 +20,7 @@ export default function Home() {
   useEffect(() => { 
     (async () => {
  /* promise all para executar as duas funções ao mesmo tempo */
-      await Promise.all([fetchCategories(), fetchTransactions()]);
+      await Promise.all([handleFetchCategories(), fetchTransactions()]);
     })() 
   }, [])
 
@@ -27,9 +28,10 @@ export default function Home() {
     <SafeAreaView className="flex-1 bg-background-primary">
       <FlatList
       className="bg-background-secondary"
-      data={[]}
+      data={transactions}
+      keyExtractor={(id) => `transaction-${id}`}
       ListHeaderComponent={<ListHeader/>}
-      renderItem={() => <></>}
+      renderItem={({item}) => <TransactionListCard transaction={item} />}
       />
     </SafeAreaView>
   )
