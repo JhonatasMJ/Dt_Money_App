@@ -1,59 +1,23 @@
-import { colors } from "@/shared/colors";
-import { TransactionTypes } from "@/shared/enums/transactionTypes";
 import { Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
-type TransactionCardType = TransactionTypes | "total";
+import { useTransactionContext } from "@/context/transaction.context";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { ICONS, TransactionCardType } from "@/strategies/icon-strategy";
+import { CARD_DATA } from "@/strategies/card-data-strategy";
 
 interface Props {
   type: TransactionCardType;
   amount: number;
 }
 
-interface IconProps {
-  name: keyof typeof MaterialIcons.glyphMap;
-  color: string;
-}
-
-/* Design Pattern Strategy, para cada tipo de transação, tem um ícone diferente */
-const ICONS: Record<TransactionCardType, IconProps> = {
-  [TransactionTypes.REVENUE]: {
-    color: colors["accent-brand-light"],
-    name: "arrow-circle-up",
-  },
-  [TransactionTypes.EXPENSE]: {
-    color: colors["accent-red"],
-    name: "arrow-circle-down",
-  },
-  total: {
-    color: colors.white,
-    name: "attach-money",
-  },
-};
-
-interface CardProps {
-  label: string;
-  bgcolor: string;
-}
-
-const CARD_DATA: Record<TransactionCardType, CardProps> = {
-  [TransactionTypes.REVENUE]: {
-    label: "Entrada",
-    bgcolor: "background-tertiary",
-  },
-  [TransactionTypes.EXPENSE]: {
-    label: "Saída",
-    bgcolor: "background-tertiary",
-  },
-  total: {
-    label: "Total",
-    bgcolor: "accent-brand-background-primary",
-  },
-};
-
 export function TransactionCard({ amount, type }: Props) {
   const iconData = ICONS[type];
   const cardData = CARD_DATA[type];
+  const { transactions } = useTransactionContext();
+  const lastTransaction = transactions.find(
+    ({ type: TransactionTypes }) => TransactionTypes.id === type,
+  );
 
   return (
     <View
@@ -64,7 +28,20 @@ export function TransactionCard({ amount, type }: Props) {
         <MaterialIcons name={iconData.name} color={iconData.color} size={26} />
       </View>
       <View>
-        <Text className="text-gray-400 text-2xl font-bold">R${amount.toFixed(2).replace(".", ",")}</Text>
+        <Text className="text-gray-400 text-2xl font-bold">
+          R${amount.toFixed(2).replace(".", ",")}
+        </Text>
+        {type !== "total" && (
+          <Text className="text-gray-700">
+            {lastTransaction?.createdAt
+              ? format(
+                  lastTransaction?.createdAt,
+                  `"Última ${cardData.label.toLocaleLowerCase()} em" d "de" MMMM`,
+                  { locale: ptBR },
+                )
+              : "Nenhuma transação encontrada"}
+          </Text>
+        )}
       </View>
     </View>
   );
