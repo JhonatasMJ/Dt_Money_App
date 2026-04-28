@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTransactionContext } from "@/context/transaction.context";
 import useErrorHandler from "@/shared/hooks/useErrorHandler";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { ListHeader } from "@/components/ListHeader";
 import { TransactionListCard } from "@/components/TransactionListCard";
 
 export default function Home() { 
-  const {fetchCategories, fetchTransactions, transactions} = useTransactionContext();
+  const {fetchCategories, fetchTransactions, transactions, refreshTransactions, loading} = useTransactionContext();
   const {handleError} = useErrorHandler();
   const handleFetchCategories = async () => {
     try{
@@ -29,9 +29,10 @@ export default function Home() {
       <FlatList
       className="bg-background-secondary"
       data={transactions}
-      keyExtractor={(id) => `transaction-${id}`}
+      keyExtractor={(item) => `transaction-${item.id}`}
       ListHeaderComponent={<ListHeader/>}
       renderItem={({item}) => <TransactionListCard transaction={item} />}
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshTransactions} />}
       />
     </SafeAreaView>
   )

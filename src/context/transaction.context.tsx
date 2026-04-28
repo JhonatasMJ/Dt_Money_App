@@ -16,6 +16,8 @@ export type TransactionContextType = {
   fetchTransactions: () => Promise<void>;
   totalTransactions: TotalTransactions;
   transactions: Transaction[];
+  refreshTransactions: () => Promise<void>;
+  loading: boolean;
 };
 
 export const TransactionContext = createContext({} as TransactionContextType);
@@ -27,6 +29,7 @@ export const TransactionContextProvider = ({
 }) => {
   const [categories, setCategories] = useState<TransactionCategory[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(false);
   const [totalTransactions, setTotalTransactions] = useState<TotalTransactions>({
     revenue: 0,
     expense: 0,
@@ -40,13 +43,13 @@ export const TransactionContextProvider = ({
 
   const createTransaction = async (transaction: CreateTransactionRequest) => {
     await transactionServices.createTransaction(transaction);
+    await refreshTransactions();
   }
 
   const updateTransaction = async (transaction: UpdateTransactionRequest) => {
     await transactionServices.updateTransaction(transaction);
+    await refreshTransactions();
   }
-
-  
 
   /* Busca todas as transações */
   const fetchTransactions = useCallback(async () => {
@@ -59,6 +62,17 @@ export const TransactionContextProvider = ({
     setTotalTransactions(transactionResponse.totalTransactions);
   }, []);
 
+  const refreshTransactions =  async () => {
+    setLoading(true);
+    const transactionResponse = await transactionServices.getTransactions({
+      page: 1,
+      perPage: 10,
+    });
+    setTransactions(transactionResponse.data);
+    setTotalTransactions(transactionResponse.totalTransactions);
+    setLoading(false);
+  }
+
   return (
     <TransactionContext.Provider
       value={{
@@ -68,7 +82,9 @@ export const TransactionContextProvider = ({
         updateTransaction,
         fetchTransactions,
         totalTransactions,
-        transactions
+        transactions,
+        refreshTransactions,
+        loading,
       }}
     >
       {children}
