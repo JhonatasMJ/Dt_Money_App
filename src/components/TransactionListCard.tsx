@@ -7,6 +7,7 @@ import { colors } from "@/shared/colors";
 import { TransactionTypes } from "@/shared/enums/transactionTypes";
 import clsx from "clsx";
 import { RightAction } from "./RightAction";
+import { LeftAction } from "./LeftAction";
 
 interface Params {
   transaction: Transaction;
@@ -26,7 +27,9 @@ export function TransactionListCard({ transaction }: Params) {
         marginBottom: 16,
       }}
       renderRightActions={() => <RightAction id={transaction.id} />}
+      renderLeftActions={() => <LeftAction transaction={transaction} />}
       overshootRight={false}
+      overshootLeft={false}
     >
       <View className="h-[140] bg-background-tertiary rounded-md p-6">
         <Text className="text-white text-base">{transaction.description}</Text>
