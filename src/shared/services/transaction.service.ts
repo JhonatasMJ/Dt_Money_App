@@ -3,6 +3,7 @@ import { dtMoneyApi } from "../api/dt-money";
 import { CreateTransactionRequest } from "../interfaces/https/create-transaction-request";
 import { GetTransactionRequest, GetTransactionResponse } from "../interfaces/https/get-transaction-request";
 import qs from 'qs';
+import { UpdateTransactionRequest } from "../interfaces/https/update-transaction-request";
 
 /* Retorna todas as categorias */
 export const getTransactionCategories = async (): Promise<TransactionCategory[]> => { 
@@ -27,4 +28,9 @@ export const getTransactions = async (params: GetTransactionRequest): Promise<Ge
 /* Deleta uma transação */
 export const deleteTransaction = async (id: number) => {
   await dtMoneyApi.delete(`/transaction/${id}`);
+}
+
+/* Atualiza uma transação */
+export const updateTransaction = async (transaction: UpdateTransactionRequest) => {
+  await dtMoneyApi.put("/transaction", transaction);
 }

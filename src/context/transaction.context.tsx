@@ -4,12 +4,14 @@ import * as transactionServices from "@/shared/services/transaction.service";
 import { CreateTransactionRequest } from "@/shared/interfaces/https/create-transaction-request";
 import { Transaction } from "@/shared/interfaces/transaction";
 import { TotalTransactions } from "@/shared/interfaces/total-transaction";
+import { UpdateTransactionRequest } from "@/shared/interfaces/https/update-transaction-request";
 
 
 /* Contexto de transações */
 export type TransactionContextType = {
   fetchCategories: () => Promise<void>;
   createTransaction: (transaction: CreateTransactionRequest) => Promise<void>;
+  updateTransaction: (transaction: UpdateTransactionRequest) => Promise<void>;
   categories: TransactionCategory[];
   fetchTransactions: () => Promise<void>;
   totalTransactions: TotalTransactions;
@@ -40,6 +42,12 @@ export const TransactionContextProvider = ({
     await transactionServices.createTransaction(transaction);
   }
 
+  const updateTransaction = async (transaction: UpdateTransactionRequest) => {
+    await transactionServices.updateTransaction(transaction);
+  }
+
+  
+
   /* Busca todas as transações */
   const fetchTransactions = useCallback(async () => {
     const transactionResponse = await transactionServices.getTransactions({
@@ -57,9 +65,10 @@ export const TransactionContextProvider = ({
         categories,
         fetchCategories,
         createTransaction,
+        updateTransaction,
         fetchTransactions,
         totalTransactions,
-        transactions,
+        transactions
       }}
     >
       {children}
