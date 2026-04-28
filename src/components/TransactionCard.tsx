@@ -5,6 +5,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ICONS, TransactionCardType } from "@/strategies/icon-strategy";
 import { CARD_DATA } from "@/strategies/card-data-strategy";
+import { moneyMapper } from "@/shared/utils/money-mapper";
+import clsx from "clsx";
 
 interface Props {
   type: TransactionCardType;
@@ -21,7 +23,7 @@ export function TransactionCard({ amount, type }: Props) {
 
   return (
     <View
-      className={`bg-${cardData.bgcolor} min-w-[280] rounded-md px-8 py-6 justify-between mr-6 mt-4`}
+      className={clsx(`bg-${cardData.bgcolor} min-w-[280] rounded-md px-8 py-6 justify-between mr-6 mt-4`, type === "total" && "mr-12")}
     >
       <View className="flex-row items-center justify-between mt-1 ">
         <Text className="text-white text-base">{cardData.label}</Text>
@@ -29,7 +31,7 @@ export function TransactionCard({ amount, type }: Props) {
       </View>
       <View>
         <Text className="text-gray-400 text-2xl font-bold">
-          R${amount.toFixed(2).replace(".", ",")}
+          R${moneyMapper(amount)}
         </Text>
         {type !== "total" && (
           <Text className="text-gray-700">
