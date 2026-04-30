@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTransactionContext } from "@/context/transaction.context";
 import useErrorHandler from "@/shared/hooks/useErrorHandler";
-import { FlatList, RefreshControl } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl } from "react-native";
 import { ListHeader } from "@/components/ListHeader";
 import { TransactionListCard } from "@/components/TransactionListCard";
 import EmptyList from "@/components/EmptyList";
+import { colors } from "@/shared/colors";
 
 export default function Home() {
   const {
@@ -83,6 +84,7 @@ export default function Home() {
         renderItem={({ item }) => <TransactionListCard transaction={item} />}
         onEndReachedThreshold={0.5}
         ListEmptyComponent={loadings.initial ? null : <EmptyList />}
+        ListFooterComponent={loadings.loadMore ? <ActivityIndicator color={colors["accent-brand-light"]} size="large" /> : null}
         refreshControl={
           <RefreshControl
             refreshing={loadings.refresh}
