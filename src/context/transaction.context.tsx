@@ -29,6 +29,7 @@ export type TransactionContextType = {
   transactions: Transaction[];
   refreshTransactions: () => Promise<void>;
   loading: boolean;
+  loadMoreTransactions: () => Promise<void>;
 };
 
 export const TransactionContext = createContext({} as TransactionContextType);
@@ -51,8 +52,9 @@ export const TransactionContextProvider = ({
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
-    perPage: 15,
+    perPage: 3,
     totalRows: 0,
+    totalPages: 0,
   });
 
   const fetchCategories = async () => {
@@ -91,6 +93,7 @@ export const TransactionContextProvider = ({
         ...pagination,
         page,
         totalRows: transactionResponse.totalRows,
+        totalPages: transactionResponse.totalPages,
       })
       setLoading(false);
     },
@@ -108,6 +111,11 @@ export const TransactionContextProvider = ({
     setLoading(false);
   };
 
+  const loadMoreTransactions = useCallback(async () => {
+    if(loading || pagination.page >= pagination.totalPages) return;
+    fetchTransactions({page: pagination.page + 1});
+  }, [loading, pagination]);
+
   return (
     <TransactionContext.Provider
       value={{
@@ -120,6 +128,7 @@ export const TransactionContextProvider = ({
         transactions,
         refreshTransactions,
         loading,
+        loadMoreTransactions,
       }}
     >
       {children}

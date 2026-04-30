@@ -7,7 +7,7 @@ import { ListHeader } from "@/components/ListHeader";
 import { TransactionListCard } from "@/components/TransactionListCard";
 
 export default function Home() { 
-  const {fetchCategories, fetchTransactions, transactions, refreshTransactions, loading} = useTransactionContext();
+  const {fetchCategories, fetchTransactions, transactions, refreshTransactions, loading, loadMoreTransactions} = useTransactionContext();
   const {handleError} = useErrorHandler();
   const handleFetchCategories = async () => {
     try{
@@ -32,7 +32,9 @@ export default function Home() {
       keyExtractor={(item) => `transaction-${item.id}`}
       ListHeaderComponent={<ListHeader/>}
       renderItem={({item}) => <TransactionListCard transaction={item} />}
+      onEndReachedThreshold={0.5}
       refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshTransactions} />}
+      onEndReached={loadMoreTransactions}
       />
     </SafeAreaView>
   )
