@@ -20,7 +20,7 @@ export default function Home() {
   useEffect(() => { 
     (async () => {
  /* promise all para executar as duas funções ao mesmo tempo */
-      await Promise.all([handleFetchCategories(), fetchTransactions()]);
+      await Promise.all([handleFetchCategories(), fetchTransactions({page: 1})]);
     })() 
   }, [])
 
