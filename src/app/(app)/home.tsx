@@ -5,6 +5,7 @@ import useErrorHandler from "@/shared/hooks/useErrorHandler";
 import { FlatList, RefreshControl } from "react-native";
 import { ListHeader } from "@/components/ListHeader";
 import { TransactionListCard } from "@/components/TransactionListCard";
+import EmptyList from "@/components/EmptyList";
 
 export default function Home() {
   const {
@@ -81,6 +82,7 @@ export default function Home() {
         ListHeaderComponent={<ListHeader />}
         renderItem={({ item }) => <TransactionListCard transaction={item} />}
         onEndReachedThreshold={0.5}
+        ListEmptyComponent={loadings.initial ? null : <EmptyList />}
         refreshControl={
           <RefreshControl
             refreshing={loadings.refresh}
