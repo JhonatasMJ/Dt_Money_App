@@ -101,13 +101,21 @@ export const TransactionContextProvider = ({
   );
 
   const refreshTransactions = async () => {
+    const {page, perPage} = pagination;
+
     setLoading(true);
     const transactionResponse = await transactionServices.getTransactions({
-      page: 1,
-      perPage: 10,
+        page: 1,
+        perPage: page * perPage,
     });
     setTransactions(transactionResponse.data);
     setTotalTransactions(transactionResponse.totalTransactions);
+    setPagination({
+      ...pagination,
+      page,
+      totalPages: transactionResponse.totalPages,
+      totalRows: transactionResponse.totalRows,
+    })
     setLoading(false);
   };
 
