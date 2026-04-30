@@ -52,7 +52,7 @@ export const TransactionContextProvider = ({
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
-    perPage: 3,
+    perPage: 15,
     totalRows: 0,
     totalPages: 0,
   });
@@ -78,14 +78,17 @@ export const TransactionContextProvider = ({
     async ({ page = 1 }: FetchTransactionsParams) => {
       setLoading(true);
       const transactionResponse = await transactionServices.getTransactions({
-       page,
-       perPage: pagination.perPage,
+        page,
+        perPage: pagination.perPage,
       });
 
-      if(page === 1) {
+      if (page === 1) {
         setTransactions(transactionResponse.data);
       } else {
-        setTransactions((prevState) => [...prevState, ...transactionResponse.data]);
+        setTransactions((prevState) => [
+          ...prevState,
+          ...transactionResponse.data,
+        ]);
       }
 
       setTotalTransactions(transactionResponse.totalTransactions);
@@ -94,19 +97,19 @@ export const TransactionContextProvider = ({
         page,
         totalRows: transactionResponse.totalRows,
         totalPages: transactionResponse.totalPages,
-      })
+      });
       setLoading(false);
     },
     [pagination],
   );
 
-  const refreshTransactions = async () => {
-    const {page, perPage} = pagination;
+  const refreshTransactions = useCallback(async () => {
+    const { page, perPage } = pagination;
 
     setLoading(true);
     const transactionResponse = await transactionServices.getTransactions({
-        page: 1,
-        perPage: page * perPage,
+      page: 1,
+      perPage: page * perPage,
     });
     setTransactions(transactionResponse.data);
     setTotalTransactions(transactionResponse.totalTransactions);
@@ -115,13 +118,13 @@ export const TransactionContextProvider = ({
       page,
       totalPages: transactionResponse.totalPages,
       totalRows: transactionResponse.totalRows,
-    })
+    });
     setLoading(false);
-  };
+  }, [pagination]);
 
   const loadMoreTransactions = useCallback(async () => {
-    if(loading || pagination.page >= pagination.totalPages) return;
-    fetchTransactions({page: pagination.page + 1});
+    if (loading || pagination.page >= pagination.totalPages) return;
+    fetchTransactions({ page: pagination.page + 1 });
   }, [loading, pagination]);
 
   return (

@@ -16,11 +16,37 @@ export default function Home() {
       handleError(error, "Falha ao buscar as categorias");
     }
   }
+
+  const handleFetchInitialTransactions = async () => { 
+    try {
+      await fetchTransactions({page: 1});
+    } catch(error) {
+      handleError(error, "Falha ao buscar as transações");
+    }
+  }
+
+  const handleLoadMoreTransactions = async () => { 
+    try {
+      await loadMoreTransactions();
+    } catch(error) {
+      handleError(error, "Falha ao carregar novas transações");
+    }
+  }
+
+
+  const handleRefreshTransactions = async () => { 
+    try {
+      await refreshTransactions();
+    } catch(error) {
+      handleError(error, "Falha ao atualizar as transações");
+    }
+  }
+
 /* Busca as categorias ao entrar na home */
   useEffect(() => { 
     (async () => {
  /* promise all para executar as duas funções ao mesmo tempo */
-      await Promise.all([handleFetchCategories(), fetchTransactions({page: 1})]);
+      await Promise.all([handleFetchCategories(), handleFetchInitialTransactions()]);
     })() 
   }, [])
 
@@ -33,8 +59,8 @@ export default function Home() {
       ListHeaderComponent={<ListHeader/>}
       renderItem={({item}) => <TransactionListCard transaction={item} />}
       onEndReachedThreshold={0.5}
-      refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshTransactions} />}
-      onEndReached={loadMoreTransactions}
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={handleRefreshTransactions} />}
+      onEndReached={handleLoadMoreTransactions}
       />
     </SafeAreaView>
   )
