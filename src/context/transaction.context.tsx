@@ -42,6 +42,7 @@ export type TransactionContextType = {
   loadMoreTransactions: () => Promise<void>;
   loadings: Loadings;
   handleLoadings: (params: HandleLoadingsParams) => void;
+  pagination: Pagination;
 };
 
 export const TransactionContext = createContext({} as TransactionContextType);
@@ -160,6 +161,7 @@ export const TransactionContextProvider = ({
         loadings,
         handleLoadings,
         loadMoreTransactions,
+        pagination,
       }}
     >
       {children}
