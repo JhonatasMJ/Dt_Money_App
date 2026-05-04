@@ -2,9 +2,31 @@ import { useTransactionContext } from "@/context/transaction.context";
 import { colors } from "@/shared/colors";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 
 export function FilterInput() {
-  const { pagination } = useTransactionContext();
+  const { pagination, setSearchText, searchText } = useTransactionContext();
+  const [text, setText] = useState("");
+  const { fetchTransactions } = useTransactionContext();
+
+  /* Debounce para buscar as transações, ele faz o search com um delay de 500ms para evitar que o usuário digite muitas vezes */
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchText(text);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [text]);
+
+  useEffect(() => {
+     (async () => {
+      try {
+        await fetchTransactions({ page: 1 });
+      } catch (error) {
+        console.log(error);
+      } 
+     })();
+  }, [searchText]);
 
   return (
     <View className="mb-4 w-[90%] self-center">
@@ -16,6 +38,8 @@ export function FilterInput() {
       </View>
       <TouchableOpacity className="flex-row items-center justify-between h-16">
         <TextInput
+          value={text}
+          onChangeText={setText}
           className="h-[50] text-white w-full bg-background-primary text-md pl-4"
           placeholderTextColor={colors.gray[600]}
           placeholder="Busque uma transação"

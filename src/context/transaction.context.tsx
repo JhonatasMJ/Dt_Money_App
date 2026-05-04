@@ -43,6 +43,8 @@ export type TransactionContextType = {
   loadings: Loadings;
   handleLoadings: (params: HandleLoadingsParams) => void;
   pagination: Pagination;
+  setSearchText: (text: string) => void;
+  searchText: string;
 };
 
 export const TransactionContext = createContext({} as TransactionContextType);
@@ -54,6 +56,7 @@ export const TransactionContextProvider = ({
 }) => {
   const [categories, setCategories] = useState<TransactionCategory[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [searchText, setSearchText] = useState("");
   const [loadings, setLoadings] = useState<Loadings>({
     initial: false,
     refresh: false,
@@ -73,6 +76,7 @@ export const TransactionContextProvider = ({
     totalRows: 0,
     totalPages: 0,
   });
+  
 
   const handleLoadings = ({ key, value }: HandleLoadingsParams) =>
     setLoadings((prevValue) => ({
@@ -103,6 +107,7 @@ export const TransactionContextProvider = ({
       const transactionResponse = await transactionServices.getTransactions({
         page,
         perPage: pagination.perPage,
+        searchText,
       });
 
       if (page === 1) {
@@ -122,7 +127,7 @@ export const TransactionContextProvider = ({
         totalPages: transactionResponse.totalPages,
       });
     },
-    [pagination],
+    [pagination, searchText]
   );
 
   const refreshTransactions = useCallback(async () => {
@@ -162,6 +167,8 @@ export const TransactionContextProvider = ({
         handleLoadings,
         loadMoreTransactions,
         pagination,
+        setSearchText,
+        searchText,
       }}
     >
       {children}
