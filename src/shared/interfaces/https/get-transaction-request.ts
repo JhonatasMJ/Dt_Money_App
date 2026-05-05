@@ -26,3 +26,10 @@ export interface GetTransactionResponse {
   perPage: 0;
   totalTransactions: TotalTransactions;
 }
+
+export interface Filters {
+  to?: Date;
+  from?: Date;
+  typeId: number;
+  categoryIds: Record<number, boolean>;
+}

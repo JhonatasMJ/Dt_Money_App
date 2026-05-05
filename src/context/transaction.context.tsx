@@ -12,7 +12,7 @@ import { CreateTransactionRequest } from "@/shared/interfaces/https/create-trans
 import { Transaction } from "@/shared/interfaces/transaction";
 import { TotalTransactions } from "@/shared/interfaces/total-transaction";
 import { UpdateTransactionRequest } from "@/shared/interfaces/https/update-transaction-request";
-import { Pagination } from "@/shared/interfaces/https/get-transaction-request";
+import { Filters, Pagination } from "@/shared/interfaces/https/get-transaction-request";
 
 interface FetchTransactionsParams {
   page: number;
@@ -27,6 +27,11 @@ interface Loadings {
 interface HandleLoadingsParams {
   key: keyof Loadings;
   value: boolean;
+}
+
+interface HandleFiltersParams {
+  key: keyof Filters;
+  value: Date | Boolean | number;
 }
 
 /* Contexto de transações */
@@ -45,6 +50,8 @@ export type TransactionContextType = {
   pagination: Pagination;
   setSearchText: (text: string) => void;
   searchText: string;
+  filters: Filters;
+  handleFilters: (params: HandleFiltersParams) => void;
 };
 
 export const TransactionContext = createContext({} as TransactionContextType);
@@ -57,6 +64,12 @@ export const TransactionContextProvider = ({
   const [categories, setCategories] = useState<TransactionCategory[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [searchText, setSearchText] = useState("");
+  const [filters, setFilters] = useState<Filters>({
+    to: undefined,
+    from: undefined,
+    typeId: undefined,
+    categoryIds: {},
+  });
   const [loadings, setLoadings] = useState<Loadings>({
     initial: false,
     refresh: false,
@@ -152,6 +165,14 @@ export const TransactionContextProvider = ({
     fetchTransactions({ page: pagination.page + 1 });
   }, [loadings.loadMore, pagination]);
 
+
+  const handleFilters = ({key, value}: HandleFiltersParams) => {
+    setFilters((prevValue) => ({
+      ...prevValue,
+      [key]: value,
+    }));
+  }
+
   return (
     <TransactionContext.Provider
       value={{
@@ -169,6 +190,8 @@ export const TransactionContextProvider = ({
         pagination,
         setSearchText,
         searchText,
+        filters,
+        handleFilters,
       }}
     >
       {children}
