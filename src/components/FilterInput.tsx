@@ -3,11 +3,14 @@ import { colors } from "@/shared/colors";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import { useBottomSheetContext } from "@/context/bottomSheet.context";
+import { TransactionFilters } from "./TransactionFilters";
 
 export function FilterInput() {
   const { pagination, setSearchText, searchText } = useTransactionContext();
   const [text, setText] = useState("");
   const { fetchTransactions } = useTransactionContext();
+  const {openBottomSheet} = useBottomSheetContext()
 
   /* Debounce para buscar as transações, ele faz o search com um delay de 500ms para evitar que o usuário digite muitas vezes */
   useEffect(() => {
@@ -44,7 +47,7 @@ export function FilterInput() {
           placeholderTextColor={colors.gray[600]}
           placeholder="Busque uma transação"
         />
-        <TouchableOpacity className="absolute right-0">
+        <TouchableOpacity onPress={() => openBottomSheet(<TransactionFilters />, 1)}  className="absolute right-0">
           <MaterialIcons
             name="filter-list"
             size={26}
