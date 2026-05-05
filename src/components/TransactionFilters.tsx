@@ -3,6 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/shared/colors";
 import { useBottomSheetContext } from "@/context/bottomSheet.context";
 import { DateFilter } from "./DateFilter";
+import { CategoryFilter } from "./CategoryFilter";
 
 export function TransactionFilters() {
   const { closeBottomSheet } = useBottomSheetContext();
@@ -16,6 +17,7 @@ export function TransactionFilters() {
         </TouchableOpacity>
       </View>
       <DateFilter />
+      <CategoryFilter />
     </View>
   );
 }
