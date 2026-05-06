@@ -13,7 +13,7 @@ export const LeftAction = ({ transaction }: Params) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={() => openBottomSheet(<EditTransactionForm transaction={transaction} />, 1)}
+      onPress={() => openBottomSheet(<EditTransactionForm transaction={transaction} />, 0)}
       className="h-[140] bg-accent-blue-dark w-[80] rounded-l-md items-center justify-center"
     >
       <MaterialIcons name="edit" size={30} color="white" />

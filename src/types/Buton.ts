@@ -6,4 +6,5 @@ type ButtonMode = 'fill' | 'outline' ;
 export interface ButtonProps extends TouchableOpacityProps {
   mode?: ButtonMode;
   iconName?: keyof typeof MaterialIcons.glyphMap;
+  widthFull?: boolean;
 }

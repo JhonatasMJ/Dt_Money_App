@@ -7,6 +7,8 @@ import { colors } from "@/shared/colors";
 export default function Button({
   mode = "fill",
   iconName,
+  className,
+  widthFull = true,
   ...rest
 }: ButtonProps) {
   const isFill = mode === "fill";
@@ -14,7 +16,9 @@ export default function Button({
   return (
     <TouchableOpacity
       className={clsx(
-        "w-full rounded-lg px-5 flex-row items-center h-button",
+        widthFull && "w-full",
+        className,
+        "rounded-lg px-5 flex-row items-center h-button",
         iconName ? "justify-between" : "justify-center",
         {
           "bg-accent-brand": isFill,

@@ -15,7 +15,7 @@ export interface GetTransactionRequest {
   from?: Date;
   to?: Date;
   typeId?: number;
-  categoryId?: number;
+  categoryIds?: number[];
 }
 
 export interface GetTransactionResponse {
