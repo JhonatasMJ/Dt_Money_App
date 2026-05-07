@@ -1,6 +1,6 @@
 # DtMoney App 💵
 
-<img src="./assets/banner.png" />
+<img src="./src/assets/banner.png" />
 
 &nbsp;
 
@@ -22,7 +22,7 @@ O desenvolvimento foi realizado durante o módulo de APIs, banco de dados local 
 
 ## 🎨 Telas do projeto
 
-<img src="./assets/Telas.png" />
+<img src="./src/assets/screens.png" />
 
 &nbsp;
 
